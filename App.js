@@ -19,16 +19,20 @@ import Welcome from './screens/Welcome'
 // CONTEXTS AND REDUX
 import AuthContextProvider, { AuthContext } from './store/auth-context'
 import { Provider } from 'react-redux';
-import { store, persistor } from './store/redux/store'
+import { store } from './store/redux/store'
 
 // CONFIGS AND UTILS 
 import { config } from "@gluestack-ui/config";
+import WelcomeScreen from './screens/WelcomeScreen';
 
 const Stack = createStackNavigator()
 
 function DefaultStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{
+      headerShown: false
+    }}>
+      <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Sign Up" component={SignUp} />
     </Stack.Navigator>
@@ -92,7 +96,7 @@ export default function App() {
     <GluestackUIProvider config={config}>
       <AuthContextProvider>
         <Provider store={store}>
-            <Root />
+          <Root />
         </Provider>
       </AuthContextProvider>
     </GluestackUIProvider>

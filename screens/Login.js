@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { Alert, Button, ButtonText, Heading, Pressable, Text, set } from '@gluestack-ui/themed';
+import { Box, Center, Divider, HStack, Heading, Icon, Image, Pressable, ScrollView, VStack } from '@gluestack-ui/themed';
 import InputComponent from '../components/InputComponent';
 import ButtonComponent from '../components/ButtonComponent';
 import {
@@ -11,8 +11,12 @@ import AlertComponent from '../components/AlertComponent';
 import { AuthContext } from '../store/auth-context';
 import { useDispatch } from 'react-redux';
 import { appendUser } from '../store/redux/appSlice'
+import { Animated } from "react-native";
+import { ChevronLeftIcon } from 'lucide-react-native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Login({ navigation }) {
+export default function Login() {
+  const navigation = useNavigation()
   const [loadingAuthentication, setAuthentication] = useState(false)
   const authCtx = useContext(AuthContext)
   const [form, setForm] = useState({
@@ -24,17 +28,30 @@ export default function Login({ navigation }) {
     subText: '',
     show: false
   })
-  
+
+  const av = new Animated.Value(0);
+  av.addListener(() => { return });
+
   const dispatch = useDispatch()
+
+  const handleForgotPassword = () => {
+    return (
+      <></>
+    )
+  }
+
+  const handleBackLogin = () => {
+    navigation.navigate('WelcomeScreen')
+  }
 
   const handleSubmit = async () => {
     setAuthentication(true)
-    try{
+    try {
       const token = await signInUser(
         form.identifier,
         form.pass
       )
-      
+
       // GET USER DATA IN DATABASE
 
 
@@ -48,7 +65,7 @@ export default function Login({ navigation }) {
 
       authCtx.authenticate(token)
 
-    }catch (error) {
+    } catch (error) {
       setAlert({
         text: 'Invalid credentials',
         subText: 'Please try again',
@@ -76,17 +93,13 @@ export default function Login({ navigation }) {
     })
   }
 
-  const handleSignUpButton = () => {
-    navigation.navigate('Sign Up')
-  }
-
-  return (
-    <View style={s.loginScreen}>
-      <View style={s.half1}>
-        <Heading size="4xl">Login</Heading>
+  // RENDERS
+  const renderLoginComponent = () => {
+    return (
+      <>
         <InputComponent
-          labelText="Contact Number or Email Address"
-          placeholder="Contact Number or Email Address"
+          labelText="Email Address"
+          placeholder="Email Address"
           onChange={handleInputChange.bind(this, 'identifier')}
           defaultValue={'test@test.com'}
         />
@@ -101,14 +114,33 @@ export default function Login({ navigation }) {
           handler={handleSubmit}
           variant={'solid'}
           label={'Sign in'}
+          color={'white'}
         />
         <ButtonComponent
-          handler={handleSignUpButton}
+          handler={handleForgotPassword}
           variant={'link'}
-          label={'No Account Yet?'}
+          color={'#DA3639'}
+          label={'Forgot Password'}
         />
+      </>
+    )
+  }
+
+  return (
+    <View style={s.loginScreen}>
+      <ScrollView>
+      <View style={s.half1}>
+        <Pressable onPress={handleBackLogin}>
+          <Icon as={ChevronLeftIcon} color={'#DA3639'}></Icon>
+        </Pressable>
+        <Heading size="4xl" style={s.signInHeader} mb={'$5'} mt={'$5'}>Sign In</Heading>
+        {renderLoginComponent()}
+        <Box style={s.logoHeader}>
+          <Image source={require('../assets/crownred.png')} style={s.imageLogo} resizeMode="contain" alt="logo" />
+        </Box>
+        <AlertComponent alert={alert} closeSetAlert={closeSetAlert} />
       </View>
-      <AlertComponent alert={alert} closeSetAlert={closeSetAlert}/>
+      </ScrollView>
     </View>
   )
 }
@@ -116,68 +148,23 @@ export default function Login({ navigation }) {
 const s = StyleSheet.create({
   loginScreen: {
     flex: 1,
+    backgroundColor: 'white'
+  },
+  logoHeader: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  imageLogo: {
+    height: 30,
+    marginTop: 20
   },
   half1: {
     flex: 1,
     backgroundColor: "white",
     padding: 20,
     paddingTop: 100
+  },
+  signInHeader: {
+    color: '#DA3639'
   }
-  // loginHeader: {
-  //   borderBottomStartRadius: 70,
-  //   borderBottomEndRadius: 70,
-  //   overflow: 'hidden',
-  //   backgroundColor: '#DA3639',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // },
-  // imageLogo: {
-  //   width: 200,
-  //   height: 200,
-  // },
-  // header: {
-  //   color: '#fff',
-  //   fontSize: 15,
-  //   fontFamily: 'josefinL',
-  //   textAlign: 'center',
-  //   paddingBottom: 150
-  // },
-  // subHeader: {
-  //   color: '#fff',
-  //   fontSize: 15,
-  //   fontFamily: 'josefinL',
-  //   textAlign: 'center',
-  //   paddingBottom: 150
-  // },
-  // btnGrp: {
-  //   margin: 30
-  // },
-  // logInBtn: {
-  //   width: 200,
-  //   alignContent: 'center',
-  //   alignItems: 'center',
-  //   textAlign: 'center'
-  // },
-  // container: {
-  //   flex: 1,
-  // },
-  // inner: {
-  //   padding: 24,
-  //   flex: 1,
-  //   justifyContent: 'space-around',
-  // },
-  // header: {
-  //   fontSize: 36,
-  //   marginBottom: 48,
-  // },
-  // textInput: {
-  //   height: 40,
-  //   borderColor: '#000000',
-  //   borderBottomWidth: 1,
-  //   marginBottom: 36,
-  // },
-  // btnContainer: {
-  //   backgroundColor: 'white',
-  //   marginTop: 12,
-  // },
 });

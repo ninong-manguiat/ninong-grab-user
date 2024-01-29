@@ -1,5 +1,5 @@
-import { Button, ButtonText, Heading, Pressable, Text, set } from '@gluestack-ui/themed';
-import { useContext, useEffect, useState } from 'react'
+import { Box, Heading, Icon, Pressable, Image, ScrollView, KeyboardAvoidingView } from '@gluestack-ui/themed';
+import { useContext, useState } from 'react'
 import {
   View,
   StyleSheet
@@ -9,8 +9,12 @@ import ButtonComponent from '../components/ButtonComponent';
 import { createUser } from '../util/auth';
 import LoadingComponent from '../components/LoadingComponent';
 import { AuthContext } from '../store/auth-context';
+import { Animated } from "react-native";
+import { ChevronLeftIcon } from 'lucide-react-native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function SignUp({navigation}) {
+export default function SignUp() {
+  const navigation = useNavigation()
   const [loadingAuthentication, setAuthentication] = useState(false)
   const authCtx = useContext(AuthContext);
   const [form, setForm] = useState({
@@ -21,23 +25,26 @@ export default function SignUp({navigation}) {
     pass: '123456'
   })
 
-  const handleSubmit = async() => {
+  const av = new Animated.Value(0);
+  av.addListener(() => { return });
+
+  const handleSubmit = async () => {
     setAuthentication(true)
-    try{
+    try {
       const token = await createUser(
         form.email,
         form.pass
       )
       authCtx.authenticate(token)
-    }catch(e){
+    } catch (e) {
 
     }
 
     setAuthentication(false)
   }
 
-  if(loadingAuthentication){
-    return <LoadingComponent text="Creating User..."/>
+  if (loadingAuthentication) {
+    return <LoadingComponent text="Creating User..." />
   }
 
   const handleInputChange = (i, e) => {
@@ -49,10 +56,13 @@ export default function SignUp({navigation}) {
     })
   }
 
-  return (
-    <View style={s.loginScreen}>
-      <View style={s.half1}>
-        <Heading size="4xl">Sign Up</Heading>
+  const handleBackLogin = () => {
+    navigation.navigate('WelcomeScreen')
+  }
+
+  const renderSignUp = () => {
+    return (
+      <>
         <InputComponent
           labelText="First Name"
           placeholder="First Name"
@@ -87,9 +97,28 @@ export default function SignUp({navigation}) {
           handler={handleSubmit}
           variant={'solid'}
           label={'Sign Up'}
+          color={'white'}
         />
+      </>
+    )
+  }
 
-      </View>
+  return (
+    <View style={s.loginScreen}>
+      <KeyboardAvoidingView>
+      <ScrollView>
+        <View style={s.half1}>
+          <Pressable onPress={handleBackLogin}>
+            <Icon as={ChevronLeftIcon} color={'#DA3639'}></Icon>
+          </Pressable>
+          <Heading size="4xl" style={s.signInHeader} mb={'$5'} mt={'$5'}>Sign Up</Heading>
+          {renderSignUp()}
+          <Box style={s.logoHeader}>
+            <Image source={require('../assets/crownred.png')} style={s.imageLogo} resizeMode="contain" alt="logo" />
+          </Box>
+        </View>
+      </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   )
 }
@@ -97,11 +126,23 @@ export default function SignUp({navigation}) {
 const s = StyleSheet.create({
   loginScreen: {
     flex: 1,
+    backgroundColor: 'white'
+  },
+  logoHeader: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  imageLogo: {
+    height: 30,
+    marginTop: 20
   },
   half1: {
     flex: 1,
     backgroundColor: "white",
     padding: 20,
     paddingTop: 100
+  },
+  signInHeader: {
+    color: '#DA3639'
   }
 });

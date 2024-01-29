@@ -46,18 +46,11 @@ const AlertComponent = ({
                     <AlertDialogFooter>
                         <ButtonGroup space="lg">
                             <Button
-                                variant="outline"
-                                action="secondary"
-                                onPress={closeSetAlert}
-                            >
-                                <ButtonText>Cancel</ButtonText>
-                            </Button>
-                            <Button
                                 bg="$error600"
                                 action="negative"
                                 onPress={closeSetAlert}
                             >
-                                <ButtonText>Deactivate</ButtonText>
+                                <ButtonText>Try again</ButtonText>
                             </Button>
                         </ButtonGroup>
                     </AlertDialogFooter>
