@@ -23,7 +23,7 @@ function InputComponent({
                 <FormControlLabel mb="$1">
                     <FormControlLabelText>{labelText}</FormControlLabelText>
                 </FormControlLabel>
-                <Input variant={'outline'} isDisabled={isDisabled}>
+                <Input variant={'outline'} isDisabled={isDisabled} >
                     <InputField
                         type={pass ? 'password' : 'text'}
                         placeholder={placeholder}

@@ -44,7 +44,7 @@ export default function SignUp() {
   }
 
   if (loadingAuthentication) {
-    return <LoadingComponent text="Creating User..." />
+    return <LoadingComponent text="Creating User..." loading={loadingAuthentication} />
   }
 
   const handleInputChange = (i, e) => {

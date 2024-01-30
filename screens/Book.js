@@ -80,7 +80,7 @@ export default function Book({ navigation }) {
     return (
 
         <View style={s.book}>
-            <Stack.Navigator>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen
                     name="Location Form"
                     component={LocationForm}
@@ -122,8 +122,7 @@ const s = StyleSheet.create({
         overflow: "hidden"
     },
     book: {
-        flex: 1,
-        marginTop: 50
+        flex: 1
     },
     grp: {
         flexDirection: "row",

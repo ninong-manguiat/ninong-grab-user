@@ -6,11 +6,14 @@ const ButtonComponent = ({
     handler,
     variant,
     label,
-    color
+    color,
+    m,
+    style
 }) => (
     <View>
         <Button
             size="lg"
+            m={m}
             variant={variant}
             isDisabled={false}
             isFocusVisible={false}
