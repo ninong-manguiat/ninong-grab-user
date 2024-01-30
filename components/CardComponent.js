@@ -1,5 +1,5 @@
-import { Box, Image, VStack, Text, Heading, HStack, Avatar } from '@gluestack-ui/themed';
-import { ArrowUpCircle } from 'lucide-react-native';
+import { Box, Image, VStack, Text, Heading, HStack, Avatar, Button, ButtonText, Badge, BadgeText, BadgeIcon } from '@gluestack-ui/themed';
+import { ArrowUpCircle, CarFrontIcon, CarTaxiFrontIcon, GlobeIcon } from 'lucide-react-native';
 import React from 'react';
 import MapSample from '../assets/map-sample.png';
 import { StyleSheet } from 'react-native';
@@ -39,36 +39,41 @@ const CardComponent = ({
             my="$1"
             overflow="hidden"
             $base-mx="$5"
-            $dark-bg="$backgroundDark900"
+            bg='#ffffff'
             $dark-borderColor="$borderDark800"
         >
-            <Box opacity="$70">
-                <Image
-                    h={"$20"}
-                    width={"$full"}
-                    alt="map"
-                    source={MapSample}
-                />
-            </Box>
+
             <VStack px="$3" pt="$5" pb="$5" padding="$1">
+                <Badge size="sm" variant="outline" borderRadius="$full" action="success" mb={'$5'}>
+                    <BadgeText>On going</BadgeText>
+                    <BadgeIcon as={CarTaxiFrontIcon} ml="$2" />
+                </Badge>
                 <ProfileCard />
-                <Text>
-                    Pickup Date: 12th December 2024
-                </Text>
-                <Text>
-                    Pickup Time: 5:00 PM
-                </Text>
-                <Text>
-                    Pickup Location: 12th December 2024
-                </Text>
-                <Text>
-                    Driver Contact Number: +639568177614
-                </Text>
+                <Box flexDirection='row' ml={-30} mt={20}>
+                    <Image source={require('../assets/locicon.png')} style={s.imgIcon} resizeMode="contain" alt="locic" />
+
+                    <Box flexDirection='column' w={290}>
+                        <Heading $dark-color="$textLight200" size="sm">
+                            184 Lecheria Calamba Laguna
+                        </Heading>
+                        <Text $dark-color="$textLight200" fontSize="$sm" my="$1.5">
+                            Origin
+                        </Text>
+                        <Heading $dark-color="$textLight200" size="sm">
+                            SM Calamba Laguna
+                        </Heading>
+                        <Text $dark-color="$textLight200" fontSize="$sm" my="$1.5">
+                            Destination
+                        </Text>
+                    </Box>
+                </Box>
             </VStack>
-            <ButtonComponent
-                label="Manage your trip"
-                
-            />
+            <Button
+                backgroundColor='#DA3639'
+                color='#ffffff'
+            >
+                <ButtonText>Manage your Trip</ButtonText>
+            </Button>
         </Box>
     )
 }
@@ -84,7 +89,6 @@ const s = StyleSheet.create({
         flexDirection: 'row',
         flex: 1,
         justifyContent: "space-between",
-        marginTop: -45,
         marginBottom: 15
     },
     hstack2: {

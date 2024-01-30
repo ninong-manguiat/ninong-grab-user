@@ -10,8 +10,6 @@ export default function Trips({ navigation }) {
                     <Heading size="2xl" paddingLeft="$5">Your Trips</Heading>
                     <CardComponent />
                     <CardComponent />
-                    <CardComponent />
-                    <CardComponent />
                 </VStack>
             </ScrollView>
         </SafeAreaView>
