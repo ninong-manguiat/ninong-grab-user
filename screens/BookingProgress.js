@@ -8,6 +8,7 @@ import { Box, Center, Heading, Image, Text, VStack, HStack, Avatar, Divider, Scr
 export default function BookingProgress({ navigation }) {
     const { ID } = useSelector((s) => s.app.BOOKING)
     const [isConfirm, setIsConfirm] = useState(false)
+    const [confirmationDetails, setConfirmationDetails] = useState()
 
     useEffect(() => {
         console.log('ID', ID)
@@ -16,8 +17,10 @@ export default function BookingProgress({ navigation }) {
 
         const unsubscribe = onSnapshot(q, (snapshot) => {
             console.log("New city: ", snapshot.data().STATUS);
-            if (snapshot.data().STATUS === 'CONFIRM BOOKING') {
+            if (snapshot.data().STATUS === 'CONFIRMED BOOKING') {
                 setIsConfirm(true)
+                setConfirmationDetails(snapshot.data())
+                console.log('snpashotdata', snapshot.data())
             }
         });
 
@@ -72,19 +75,19 @@ export default function BookingProgress({ navigation }) {
                     </HStack>
                     <VStack px="$6" pt="$4" pb="$6">
                         <Heading $dark-color="$textLight200" size="sm">
-                            NEM6898
+                            {confirmationDetails ? confirmationDetails.DRIVER.DRIVER_PLATE_NO : ''}
                         </Heading>
                         <Text $dark-color="$textLight200" fontSize="$sm" my="$1.5">
                             Plate Number
                         </Text>
                         <Heading $dark-color="$textLight200" size="sm">
-                            Johanna Marquez
+                            {confirmationDetails ? confirmationDetails.DRIVER.DRIVER_NAME : ''}
                         </Heading>
                         <Text $dark-color="$textLight200" fontSize="$sm" my="$1.5">
                             Driver Name
                         </Text>
                         <Heading $dark-color="$textLight200" size="sm">
-                            +639568177614
+                            {confirmationDetails ? confirmationDetails.DRIVER.DRIVER_CONTACT_NO : ''}
                         </Heading>
                         <Text $dark-color="$textLight200" fontSize="$sm" my="$1.5">
                             Contact No.
@@ -93,23 +96,23 @@ export default function BookingProgress({ navigation }) {
                         <Divider></Divider>
 
                         <Box flexDirection='row' ml={-30} mt={20}>
-                            <Image source={require('../assets/locicon.png')} style={s.imgIcon} resizeMode="contain" alt="locic" />
+                            <Image source={require('../assets/locicon.png')} style={s.imgIcon} resizeMode="contain" alt="locic" mt="$8"/>
 
-                            <Box flexDirection='column' w={290}>
+                            <Box flexDirection='column' w={200}>
 
                                 <Heading $dark-color="$textLight200" size="xs">
-                                    184 Lecheri Calamba Lagunarwerwrewrwer
+                                    {confirmationDetails ? confirmationDetails.ORIGIN.ADD : ''}
                                 </Heading>
-                                <Heading $dark-color="$textLight200" size="xs">
-                                    dasdsa
-                                </Heading>
+                                <Text $dark-color="$textLight200" size="xs">
+                                    {confirmationDetails ? confirmationDetails.ORIGIN.LANDMARK : ''}
+                                </Text>
 
                                 <Heading $dark-color="$textLight200" size="xs" mt={'$5'}>
-                                    Calmba Laguna
+                                    {confirmationDetails ? confirmationDetails.DESTINATION.ADD : ''}
                                 </Heading>
-                                <Heading $dark-color="$textLight200" size="xs">
-                                    dasdsa
-                                </Heading>
+                                <Text $dark-color="$textLight200" size="xs">
+                                    {confirmationDetails ? confirmationDetails.DESTINATION.LANDMARK : ''}
+                                </Text>
                             </Box>
                         </Box>
                         <Text

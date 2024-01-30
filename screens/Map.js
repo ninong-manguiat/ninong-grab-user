@@ -29,30 +29,33 @@ const Map = ({
     const { isOrigin } = route.params;
 
     const selectLocationHandler = async (e) => {
-        const lat = e.nativeEvent.coordinate.latitude
-        const lng = e.nativeEvent.coordinate.longitude
-        let add = await getAddress(lat, lng)
-
-        setSelectedLoc({
-            lat: lat,
-            lng: lng,
-            add: add
-        })
-
-        if (isOrigin) {
-
-
-            dispatch(appendOriginBooking({
-                LAT: lat,
-                LNG: lng,
-                ADD: add
-            }))
-        } else {
-            dispatch(appendDestinationBooking({
-                LAT: lat,
-                LNG: lng,
-                ADD: add
-            }))
+        //VALIDATE IF SELECTING OF CONFIRM LOCATION ALREADY
+        if(!openAS){
+            const lat = e.nativeEvent.coordinate.latitude
+            const lng = e.nativeEvent.coordinate.longitude
+            let add = await getAddress(lat, lng)
+    
+            setSelectedLoc({
+                lat: lat,
+                lng: lng,
+                add: add
+            })
+    
+            if (isOrigin) {
+    
+    
+                dispatch(appendOriginBooking({
+                    LAT: lat,
+                    LNG: lng,
+                    ADD: add
+                }))
+            } else {
+                dispatch(appendDestinationBooking({
+                    LAT: lat,
+                    LNG: lng,
+                    ADD: add
+                }))
+            }
         }
     }
 
